@@ -23,7 +23,7 @@ void initHash(HashTable** t,int M){
 	*t = (HashTable*)malloc(sizeof(HashTable));
 	(*t)->sz = M;
 	for (int i = 0; i < M; i++) {
-        initListaEncadeada((*t)->itens,i);
+        initListaEncadeada((*t)->itens);
     }
 }
 

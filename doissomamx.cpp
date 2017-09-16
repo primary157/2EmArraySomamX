@@ -29,8 +29,6 @@ int doisSomamXComTimer(int **in, int sz, int x, unsigned long long *tempo_de_cpu
     return retorno;
 }
 int doisSomamX(int **in, int sz, int x, void sort(int**,int), int search(int**,int,int)){
-    int posicao;
     if(sort != NULL)    sort(in,sz);
-    posicao = search(in,sz,x);
-    return posicao==-1?0:1;
+    return search(in,sz,x);
 }

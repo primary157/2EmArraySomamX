@@ -25,4 +25,5 @@
 int buscaHash(HashTable *h, int x);
 int buscaHashDeVetor(HashTable *h, int *entrada, int sz, int x);
 int criaHashEBusca(int **entrada, int sz, int x);
+
 #endif // BUSCACOMHASH_H

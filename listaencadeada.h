@@ -32,7 +32,7 @@ typedef struct _ListaEncadeada{
 	Item dado;
 } ListaEncadeada;
 // Funcao inicializadora da estrutura
-void initListaEncadeada(ListaEncadeada **lista, int M);
+void initListaEncadeada(ListaEncadeada **lista);
 // Funcao de adicao de itens na lista
 void ListaEncadeada_Insere(ListaEncadeada **lista, Item item);
 

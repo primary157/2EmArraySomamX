@@ -21,5 +21,7 @@
 #define MERGESORT_H
 #include <stdlib.h>
 void mergeSort(int **in, int sz);
+void mergesort_i (int n, int *v);
+void intercala (int p, int q, int r, int *v);
 
 #endif // MERGESORT_H

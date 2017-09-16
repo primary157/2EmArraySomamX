@@ -18,45 +18,80 @@
  */
 
 #include "heapsort.h"
-
-// Rearranja um vetor v[1..m] de modo a
-// transformá-lo em heap.
-
-void constroiHeap(int *v, int m){
-   int k; 
-   for (k = 1; k < m; ++k) {                   
-      // v[1..k] é um heap
-      int f = k+1;
-      while (f > 1 && v[f/2] < v[f]) {  // 5
-         int t = v[f/2];
-         v[f/2] = v[f];
-         v[f] = v[f/2];          // 6
-         f /= 2;                        // 7
-      }
-   }
+//referencia: https://gist.github.com/marcoscastro/6877436826b6a8a9ccd3#file-heap_sort-c
+void rebuild(int v[], int limit, int pos)
+{		
+	int c1, c2;
+	
+	c1 = 2 * pos;
+	c2 = c1 + 1;
+	
+	if(c1 > limit || (v[pos - 1] >= v[c1 - 1] && v[pos - 1] >= v[c2 - 1]))
+		return;
+	
+	int greater_index = -1;
+	
+	if(c2 > limit)
+		greater_index = c1;
+	else
+	{		
+		if(v[c1 - 1] > v[c2 - 1])
+			greater_index = c1;
+		else
+			greater_index = c2;
+	}
+	
+	if(greater_index != -1)
+	{
+		int aux = v[greater_index - 1];
+		v[greater_index - 1] = v[pos - 1];
+		v[pos - 1] = aux;
+		rebuild(v, limit, greater_index);
+	}
 }
 
-void peneira(int *v, int m){ 
-   int p = 1, f = 2, t = v[1];
-   while (f <= m) {
-      if (f < m && v[f] < v[f+1])  ++f;
-      if (t >= v[f]) break;
-      v[p] = v[f];
-      p = f, f = 2*p;
-   }
-   v[p] = t;
+
+void build(int v[], int size_v)
+{
+	int left;
+	
+	if(size_v % 2 == 0)
+		left = size_v / 2 + 1;
+	else
+		left = (size_v - 1) / 2 + 1;
+	
+	while(left > 1)
+	{
+		left--;
+		rebuild(v, size_v, left);
+	}
 }
 
+void heap_sort(int v[], int size_v)
+{
+	// builds the heap
+	build(v, size_v);
+
+	/*
+		change the item of the position 1 with the item of the position "n", 
+		after with "n - 1", "n - 2" until there only 1 item.
+	*/
+	int limit = size_v;
+	
+	while(1)
+	{		
+		int aux = v[0];
+		v[0] = v[limit - 1];
+		v[limit - 1] = aux;
+		
+		rebuild(v, limit - 1, 1);
+			
+		limit--;
+		
+		if(limit <= 2 && v[0] <= v[1])
+			break;
+	}
+}
 void heapSort(int **in, int sz){
-    heapSort_(*v,n);
-}
-void heapSort_(int *v, int n){
-    int m;
-    constroiHeap (v, n);
-    for (m = n; m >= 2; --m) {
-        int t = v[1];
-        v[1] = v[m];
-        v[m] = t;          // 6
-        peneira (v, m-1);
-    }
+    heap_sort(*in,sz);
 }

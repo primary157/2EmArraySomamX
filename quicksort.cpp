@@ -20,7 +20,7 @@
 #include "quicksort.h"
 
 void quickSort(int **in, int sz){
-    quickSort_(*in,0,sz);
+    quickSort_(*in,0,sz-1);
 }
 void quickSort_(int *arr, int left, int right) {
       int i = left, j = right;
@@ -40,7 +40,7 @@ void quickSort_(int *arr, int left, int right) {
                   i++;
                   j--;
             }
-      };
+      }
  
       /* recursion */
       if (left < j)

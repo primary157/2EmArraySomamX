@@ -32,6 +32,7 @@ int binarySearch(int **in, int sz, int x){
        else{
            return mid; // found
            
+        }
    }
    return -1; // not found
 }

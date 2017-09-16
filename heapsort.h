@@ -21,8 +21,4 @@
 #define HEAPSORT_H
 
 void heapSort(int **in, int sz);
-void peneira(int *v, int n);
-void constroiHeap(int *v, int m);
-void heapSort_(int *v, int n);
-
 #endif // HEAPSORT_H
