@@ -19,14 +19,16 @@
 
 #include "listaencadeada.h"
 void initListaEncadeada(ListaEncadeada **lista){
-	*lista = NULL;
+	*lista = (ListaEncadeada*)malloc(sizeof(ListaEncadeada));
+    (*lista)->dado = (Item){0,0};
+    (*lista)->prox = NULL;
 }
 
-void ListaEncadeada_Insere(ListaEncadeada **lista, Item item){
-	if((*lista) == NULL){
-		*lista = (ListaEncadeada *)malloc(sizeof(ListaEncadeada));
-		(*lista)->prox = NULL;
-		(*lista)->dado = item;
+void ListaEncadeada_Insere(ListaEncadeada *lista, Item item){
+	if(lista->prox == NULL){
+		lista->prox = (ListaEncadeada *)malloc(sizeof(ListaEncadeada));
+		lista->prox->prox = NULL;
+		lista->prox->dado = item;
 	}
-	else ListaEncadeada_Insere(&(*lista)->prox,item);
+	else ListaEncadeada_Insere(lista->prox,item);
 }

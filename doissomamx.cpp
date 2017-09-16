@@ -18,14 +18,11 @@
  */
 
 #include "doissomamx.h"
-#include <time.h>
-int doisSomamXComTimer(int **in, int sz, int x, unsigned long long *tempo_de_cpu, unsigned long long *tempo_de_usuario, void sort(int**,int), int search(int**,int,int)){
+int doisSomamXComTimer(int **in, int sz, int x, clock_t *tempo, void sort(int**,int), int search(int**,int,int)){
     int retorno = 0;
-    time_t inicio_real = time(NULL);
     clock_t inicio_cpu = clock();
     retorno = doisSomamX(in,sz,x,sort,search);
-    *tempo_de_cpu = (clock() - inicio_cpu)/CLOCKS_PER_SEC;
-    *tempo_de_usuario = time(NULL) - inicio_real - *tempo_de_cpu;
+    *tempo = (clock() - inicio_cpu)/(CLOCKS_PER_SEC/1000);
     return retorno;
 }
 int doisSomamX(int **in, int sz, int x, void sort(int**,int), int search(int**,int,int)){

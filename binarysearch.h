@@ -21,5 +21,5 @@
 #define BINARYSEARCH_H
 
 int binarySearch(int **in, int sz, int x);
-
+int binarySearch_(int *in, int sz, int x);
 #endif // BINARYSEARCH_H

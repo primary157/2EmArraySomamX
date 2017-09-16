@@ -18,16 +18,22 @@
  */
 
 #include "binarysearch.h"
-
 int binarySearch(int **in, int sz, int x){
+    int retorno, i = 0;
+    do{
+        retorno = binarySearch_(*in,sz,x-(*in)[i++]);
+    }while(retorno == -1 && i < sz);
+    return retorno;
+}
+int binarySearch_(int *in, int sz, int x){
    int low = 0;
    int high = sz - 1;
    int mid;
    while (low <= high) {
        mid = low + ((high - low) / 2);
-       if ((*in)[mid] > x)
+       if (in[mid] > x)
            high = mid - 1;
-       else if ((*in)[mid] < x)
+       else if (in[mid] < x)
            low = mid + 1;
        else{
            return mid; // found

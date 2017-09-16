@@ -37,5 +37,5 @@ Item at(HashTable *h, int pos){
 }
 
 void insereHash(HashTable *h, Item it){
-    ListaEncadeada_Insere(&h->itens[it.Chave%h->sz],it);
+    ListaEncadeada_Insere(h->itens[it.Chave%h->sz],it);
 }

@@ -19,8 +19,9 @@
 
 #ifndef DOISSOMAMX_H
 #define DOISSOMAMX_H
-
-int doisSomamXComTimer(int **in, int sz, int x, unsigned long long *tempo_de_cpu, unsigned long long *tempo_de_usuario, void sort(int**,int), int search(int**,int,int));
+#include <stdio.h>
+#include <time.h>
+int doisSomamXComTimer(int **in, int sz, int x, clock_t *tempo, void sort(int**,int), int search(int**,int,int));
 int doisSomamX(int **in, int sz, int x, void sort(int**,int), int search(int**,int,int));
 
 

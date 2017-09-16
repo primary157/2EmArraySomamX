@@ -8,31 +8,39 @@
 #include "interpolationsearch.h"
 #define NUM_DE_SOLUCOES 6
 int main() {
-    int *Entrada, sz,x; unsigned long long tempo_de_usuario[NUM_DE_SOLUCOES], tempo_de_cpu[NUM_DE_SOLUCOES];
+    int *Entrada, *copia_Entrada, sz,x; clock_t tempo[NUM_DE_SOLUCOES]; int it = 0;
     scanf("%d %d",&sz, &x);
     Entrada = (int*) malloc (sz * sizeof(int));
+    copia_Entrada = (int*) malloc (sz * sizeof(int));
     for(int i = 0; i < sz; i++) scanf("%d",Entrada + i);
-    doisSomamXComTimer(&Entrada,sz,x,tempo_de_cpu,tempo_de_usuario,quickSort,binarySearch);
-    
-    doisSomamXComTimer(&Entrada,sz,x,tempo_de_cpu + 1,tempo_de_usuario + 1,quickSort,interpolation_search);
-    
-    doisSomamXComTimer(&Entrada,sz,x,tempo_de_cpu + 2,tempo_de_usuario + 2,heapSort,binarySearch);
-    
-    doisSomamXComTimer(&Entrada,sz,x,tempo_de_cpu + 3,tempo_de_usuario + 3,heapSort,interpolation_search);
-    
-    doisSomamXComTimer(&Entrada,sz,x,tempo_de_cpu + 4,tempo_de_usuario + 4,mergeSort,binarySearch);
-    
-    doisSomamXComTimer(&Entrada,sz,x,tempo_de_cpu + 5,tempo_de_usuario + 5,mergeSort,interpolation_search);
-    
-    //doisSomamXComTimer(&Entrada,sz,x,tempo_de_cpu + 6,tempo_de_usuario + 6,NULL,criaHashEBusca);
-    
+    for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
+    printf("quickSort interpolation\n");
+    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,quickSort,interpolation_search);
+    for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
+    printf("heapSort interpolation\n");
+    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,heapSort,interpolation_search);
+    printf("mergeSort interpolation\n");
+    for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
+    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,mergeSort,interpolation_search);
+    for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
+    printf("quickSort binary\n");
+    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,quickSort,binarySearch);
+    for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
+    printf("heapSort binary\n");
+    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,heapSort,binarySearch);
+    for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
+    printf("mergeSort binary\n");
+    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,mergeSort,binarySearch);
+    /*
+    printf("Hash\n");
+    for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
+    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,NULL,criaHashEBusca);
+    */
     
     
     for(int i = 0; i < NUM_DE_SOLUCOES; i++){
-        printf("Caso %d\n",i);
-        printf("\tTempo de usuario: %llu\n",tempo_de_usuario[i]);
-        printf("\tTempo de cpu: %llu\n",tempo_de_cpu[i]);
-        printf("\tTempo total: %llu\n",tempo_de_cpu[i]+tempo_de_usuario[i]);
+        printf("Caso %d\n",i+1);
+        printf("\tTempo gasto: %lu\n",tempo[i]);
     }
     return 0;
 }

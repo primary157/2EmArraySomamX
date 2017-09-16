@@ -18,18 +18,21 @@
  */
 
 #include "interpolationsearch.h"
-
+#include <stdio.h>
 int interpolation_search(int **in, int sz, int x){
-    return interpolation_search_(*in,sz,x);
+    int retorno, i = 0;
+    do{
+        retorno = interpolation_search_(*in,sz,x-(*in)[i++]);
+    }while(retorno == -1 && i < sz);
+    return retorno;
 }
 int interpolation_search_(int *arr, int size, int key){
-    int low = 0;
-    int high = size - 1;
-    int mid;
+    long long unsigned low = 0;
+    long long unsigned high = size - 1;
+    long long unsigned mid;
 
     while ((arr[high] != arr[low]) && (key >= arr[low]) && (key <= arr[high])) {
         mid = low + ((key - arr[low]) * (high - low) / (arr[high] - arr[low]));
-
         if (arr[mid] < key)
             low = mid + 1;
         else if (key < arr[mid])
