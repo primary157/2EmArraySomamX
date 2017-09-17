@@ -20,7 +20,6 @@
 #ifndef BUSCACOMHASH_H
 #define BUSCACOMHASH_H
 #include"hash.h"
-#include "indiceinvertidohash.h"
 
 int buscaHash(HashTable *h, int x);
 int buscaHashDeVetor(HashTable *h, int *entrada, int sz, int x);

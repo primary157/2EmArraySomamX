@@ -18,24 +18,45 @@
  */
 
 #include "hash.h"
-
+//Array de numeros primos uteis para se calcular tamanho da tabela Hash
 void initHash(HashTable** t,int M){
 	*t = (HashTable*)malloc(sizeof(HashTable));
 	(*t)->sz = M;
+	initListaEncadeada(&(*t)->itens,M);
 	for (int i = 0; i < M; i++) {
-        initListaEncadeada((*t)->itens);
-    }
+		(*t)->itens[i].prox = NULL;
+		(*t)->itens[i].dados.chave = -1;
+	}
 }
 
-Item at(HashTable *h, int pos){
-    ListaEncadeada *le = h->itens[pos%h->sz];
-    while(le->dado.Chave != pos){
-        if(le->prox != NULL) le = le->prox;
-        else return (Item){-1,-1};
-    }
-    return le->dado;
+int search(HashTable* t, unsigned int Chave){ //Retorna 1 caso matricula seja encontrada, 0 caso nao esteja na lista
+	int hash = Chave % t->sz, hash_tam = t->sz;
+	ListaEncadeada* ptr = &t->itens[hash];
+	while(ptr != NULL && Chave != ptr->dados.chave){
+		ptr = ptr->prox;	//Campo possui item
+	}
+	return ptr == NULL;
 }
-
-void insereHash(HashTable *h, Item it){
-    ListaEncadeada_Insere(h->itens[it.Chave%h->sz],it);
+void initClosedAdressingHash(ClosedAdressingHashTable** t,int M){
+	*t = (ClosedAdressingHashTable *)malloc(sizeof(ClosedAdressingHashTable));
+	initHash(&(*t)->table,M);
+	(*t)->pesos = (unsigned int *)malloc(sizeof(unsigned int));		//Primeira posicao vetor possui o tamanho do vetor
+	(*t)->pesos[0] = 0;
+}
+void addItem(ClosedAdressingHashTable *t, Item item){
+	int hash = 0;
+	hash = item.chave % t->table->sz;
+	if(t->table->itens[hash].dados.chave != -1){
+		antiColisoes(&t->table->itens[hash],item);	//Campo possui item
+		return;
+	}
+	t->table->itens[hash].dados = item;	//Se Campo estiver vazio
+	t->table->itens[hash].prox = NULL;
+}
+void antiColisoes(ListaEncadeada *i,Item item){
+	if(i->prox == NULL){
+		ListaEncadeada_Insere(&(i->prox), item);
+		return;
+	}
+	antiColisoes(i->prox, item);
 }

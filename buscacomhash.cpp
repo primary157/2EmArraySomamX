@@ -20,18 +20,19 @@
 #include "buscacomhash.h"
 
 int buscaHash(HashTable *h, int x){
-    return at(h,x).Valor;
+    return h->itens[x].dados.valor;//at(h,x);
 }
 int buscaHashDeVetor(HashTable *h, int *entrada, int sz, int x){
-    Item it;
+    int it;
     for(int i = 0; i < sz; i++){
-        it = at(h,x-entrada[i]);
-        if(it.Valor != -1) return it.Valor;
+        it = buscaHash(h,x-entrada[i]);
+        if(it != -1) return it;
     }
     return -1;
 }
 int criaHashEBusca(int **entrada, int sz, int x){
-    HashTable *hash;
-    constroiIndiceInvertido(&hash,*entrada,sz);
-    return buscaHashDeVetor(hash,*entrada,sz,x);
+    ClosedAdressingHashTable *t;
+	initClosedAdressingHash(&t,sz);
+    for(int i = 0; i < sz; i++)   addItem(t,(Item){i,(*entrada)[i]});
+    return buscaHashDeVetor(t->table,*entrada,sz,x);
 }

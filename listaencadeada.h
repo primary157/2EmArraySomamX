@@ -21,19 +21,21 @@
 #define LISTAENCADEADA_H
 
 #include <stdlib.h>
+// Renomeamos o tipo vetor de chars para tornar mais intuitivo o uso deste
+typedef int Chave;
 //Estrutura responsável por armazenar informações usadas em nossa implementação
-typedef struct Item{
-    int Chave;
-    int Valor;
-}Item;
+typedef struct{
+	int valor;
+	Chave chave;
+} Item;
 //Estrutura da Lista encadeada
 typedef struct _ListaEncadeada{
 	struct _ListaEncadeada *prox;
-	Item dado;
+	Item dados;
 } ListaEncadeada;
 // Funcao inicializadora da estrutura
-void initListaEncadeada(ListaEncadeada **lista);
+void initListaEncadeada(ListaEncadeada **lista, int M);
 // Funcao de adicao de itens na lista
-void ListaEncadeada_Insere(ListaEncadeada *lista, Item item);
+void ListaEncadeada_Insere(ListaEncadeada **lista, Item item);
 
 #endif // LISTAENCADEADA_H

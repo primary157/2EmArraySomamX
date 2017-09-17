@@ -18,17 +18,15 @@
  */
 
 #include "listaencadeada.h"
-void initListaEncadeada(ListaEncadeada **lista){
-	*lista = (ListaEncadeada*)malloc(sizeof(ListaEncadeada));
-    (*lista)->dado = (Item){0,0};
-    (*lista)->prox = NULL;
+void initListaEncadeada(ListaEncadeada **lista, int M){
+	*lista = (ListaEncadeada*) malloc(sizeof(ListaEncadeada) * M);
 }
 
-void ListaEncadeada_Insere(ListaEncadeada *lista, Item item){
-	if(lista->prox == NULL){
-		lista->prox = (ListaEncadeada *)malloc(sizeof(ListaEncadeada));
-		lista->prox->prox = NULL;
-		lista->prox->dado = item;
+void ListaEncadeada_Insere(ListaEncadeada **lista, Item item){
+	if((*lista) == NULL){
+		*lista = (ListaEncadeada *)malloc(sizeof(ListaEncadeada));
+		(*lista)->prox = NULL;
+		(*lista)->dados = item;
 	}
-	else ListaEncadeada_Insere(lista->prox,item);
+	else ListaEncadeada_Insere(&(*lista)->prox,item);
 }
