@@ -21,6 +21,7 @@
 #define DOISSOMAMX_H
 #include <stdio.h>
 #include <time.h>
+int dumbSearch(int **Entrada, int sz, int x);
 int doisSomamXComTimer(int **in, int sz, int x, clock_t *tempo, void sort(int**,int), int search(int**,int,int));
 int doisSomamX(int **in, int sz, int x, void sort(int**,int), int search(int**,int,int));
 

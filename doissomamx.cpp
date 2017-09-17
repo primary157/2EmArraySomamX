@@ -18,6 +18,9 @@
  */
 
 #include "doissomamx.h"
+int dumbSearch(int **Entrada, int sz, int x){
+    return 0;
+}
 int doisSomamXComTimer(int **in, int sz, int x, clock_t *tempo, void sort(int**,int), int search(int**,int,int)){
     int retorno = 0;
     clock_t inicio_cpu = clock();
