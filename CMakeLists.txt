@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 2.6)
 project(encontrar2quesomamx)
-
+IF(CMAKE_COMPILER_IS_GNUCC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
+ENDIF(CMAKE_COMPILER_IS_GNUCC)
 include_directories(.)
-file(GLOB core_LIB_SOURCES ./*.cpp)
+file(GLOB core_LIB_SOURCES ./*.c)
 file(GLOB coreLIB_HEADERS ./*.h)
 add_executable(encontrar2quesomamx ${core_LIB_SOURCES} ${core_LIB_HEADERS})
 
