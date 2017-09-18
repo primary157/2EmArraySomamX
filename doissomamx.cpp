@@ -21,6 +21,8 @@
 int dumbSearch(int **Entrada, int sz, int x){
     return 0;
 }
+void dumbSort(int **Entrada, int sz){
+}
 int doisSomamXComTimer(int **in, int sz, int x, clock_t *tempo, void sort(int**,int), int search(int**,int,int)){
     int retorno = 0;
     clock_t inicio_cpu = clock();
@@ -29,6 +31,6 @@ int doisSomamXComTimer(int **in, int sz, int x, clock_t *tempo, void sort(int**,
     return retorno;
 }
 int doisSomamX(int **in, int sz, int x, void sort(int**,int), int search(int**,int,int)){
-    if(sort != NULL)    sort(in,sz);
+    sort(in,sz);
     return search(in,sz,x);
 }

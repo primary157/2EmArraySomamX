@@ -18,7 +18,6 @@
  */
 
 #include "buscacomhash.h"
-
 int buscaHash(HashTable *h, int x){
     return h->itens[x].dados.valor;//at(h,x);
 }
@@ -31,8 +30,8 @@ int buscaHashDeVetor(HashTable *h, int *entrada, int sz, int x){
     return -1;
 }
 int criaHashEBusca(int **entrada, int sz, int x){
-    ClosedAdressingHashTable *t;
-	initClosedAdressingHash(&t,sz);
-    for(int i = 0; i < sz; i++)   addItem(t,(Item){i,(*entrada)[i]});
+    HashTable *t;
+	initHash(&t,sz);
+    for(int i = 0; i < sz; i++)	addItem(t,(Item){i,(*entrada)[i]});
     return buscaHashDeVetor(t->table,*entrada,sz,x);
 }

@@ -26,13 +26,7 @@ typedef struct{
 	int sz;
 	ListaEncadeada *itens;
 } HashTable;
-typedef struct{ 
-	HashTable *table;
-	unsigned int *pesos;
-} ClosedAdressingHashTable;
-void initClosedAdressingHash(ClosedAdressingHashTable** t,int M);
-void addItem(ClosedAdressingHashTable *t, Item i);
-void antiColisoes(ListaEncadeada *i,Item item);
+void addItem(HashTable *t, Item i);
 // Funcao inicializadora da estrutura
 void initHash(HashTable** t,int M);
 // Funcao de busca por Item pela Chave

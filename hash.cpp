@@ -37,26 +37,12 @@ int search(HashTable* t, unsigned int Chave){ //Retorna 1 caso matricula seja en
 	}
 	return ptr == NULL;
 }
-void initClosedAdressingHash(ClosedAdressingHashTable** t,int M){
-	*t = (ClosedAdressingHashTable *)malloc(sizeof(ClosedAdressingHashTable));
-	initHash(&(*t)->table,M);
-	(*t)->pesos = (unsigned int *)malloc(sizeof(unsigned int));		//Primeira posicao vetor possui o tamanho do vetor
-	(*t)->pesos[0] = 0;
-}
-void addItem(ClosedAdressingHashTable *t, Item item){
-	int hash = 0;
-	hash = item.chave % t->table->sz;
-	if(t->table->itens[hash].dados.chave != -1){
-		antiColisoes(&t->table->itens[hash],item);	//Campo possui item
+void addItem(HashTable *t, Item item){
+	int hash = item.chave % t->sz;
+	if(t->itens[hash].dados.chave != -1){
+		ListaEncadeada_Insere(&t->itens[hash].prox,item);	//Campo possui item
 		return;
 	}
-	t->table->itens[hash].dados = item;	//Se Campo estiver vazio
-	t->table->itens[hash].prox = NULL;
-}
-void antiColisoes(ListaEncadeada *i,Item item){
-	if(i->prox == NULL){
-		ListaEncadeada_Insere(&(i->prox), item);
-		return;
-	}
-	antiColisoes(i->prox, item);
+	t->itens[hash].dados = item;	//Se Campo estiver vazio
+	t->itens[hash].prox = NULL;
 }

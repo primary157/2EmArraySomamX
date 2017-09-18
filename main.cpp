@@ -28,8 +28,8 @@ int main() {
     for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
     printf("heapSort interpolation\n");
     doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,heapSort,interpolation_search);
-    printf("mergeSort interpolation\n");
     for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
+    printf("mergeSort interpolation\n");
     doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,mergeSort,interpolation_search);
     for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
     printf("quickSort binary\n");
@@ -40,11 +40,12 @@ int main() {
     for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
     printf("mergeSort binary\n");
     doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,mergeSort,binarySearch);
-    /*
-    printf("Hash\n");
+    /*	Descomente Para Ver que fracasso foi o Hash
     for(int i = 0; i < sz; i++) copia_Entrada[i] = Entrada[i];
-    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,NULL,criaHashEBusca);
+    printf("Hash\n");
+    doisSomamXComTimer(&copia_Entrada,sz,x,tempo + it++,dumbSort,criaHashEBusca);
     */
+    
     
     
     for(int i = 0; i < NUM_DE_SOLUCOES; i++){
