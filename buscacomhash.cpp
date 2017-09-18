@@ -31,7 +31,7 @@ int buscaHashDeVetor(HashTable *h, int *entrada, int sz, int x){
 }
 int criaHashEBusca(int **entrada, int sz, int x){
     HashTable *t;
-	initHash(&t,sz);
+    initHash(&t,sz);
     for(int i = 0; i < sz; i++)	addItem(t,(Item){i,(*entrada)[i]});
-    return buscaHashDeVetor(t->table,*entrada,sz,x);
+    return buscaHashDeVetor(t,*entrada,sz,x);
 }
