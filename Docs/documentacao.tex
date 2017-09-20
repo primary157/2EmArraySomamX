@@ -1,0 +1,288 @@
+\documentclass[12pt]{article}
+
+\usepackage[english,brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{indentfirst}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{pgfplots}
+
+\hypersetup{
+	colorlinks,
+	linkcolor={red!100!black},
+	citecolor={blue!50!black},
+	urlcolor={blue!80!black}
+}
+
+%permitir o uso de paragraph como quarto nivel de topico
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{5}
+
+\newcommand{\thecompany}{\huge Universidade Federal de Viçosa\\Campus Florestal\\Ciência da Computação}
+\newcommand{\thelogo}{\begin{figure}[H] \centering \includegraphics[height=3cm]{BRASAOUFV.jpg} \end{figure}}
+\newcommand{\thedate}{\today}
+\newcommand{\thetitle}{\textbf{\LARGE 2 que somam X} \\ \large{1º Trabalho Prático de Projeto e Análise De Algoritmos}}
+\newcommand{\theauthor}{Victor (02658)}
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+\lstset{
+	tabsize=4,
+	language=[GNU]C++,
+	basicstyle=\scriptsize,
+	upquote=true,
+	aboveskip={1.5\baselineskip},
+	columns=fixed,
+	showstringspaces=false,
+	extendedchars=false,
+	breaklines=true,
+	prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+	frame=single,
+	numbers=left,
+	showtabs=false,
+	showspaces=false,
+	showstringspaces=false,
+	keywordstyle=\color[rgb]{0, 0, 1},
+	commentstyle=\color[rgb]{0.026,0.112,0.095},
+	stringstyle=\color[rgb]{0.627, 0.126, 0.941},
+	numberstyle=\color[rgb]{0.205,0.142,0.73}
+}
+\lstset{
+	backgroundcolor=\color{lbcolor},
+	tabsize=4,
+	language=C++,
+	captionpos=b,
+	tabsize=3,
+	frame=lines,
+	numbers=left,
+	numberstyle=\tiny,
+	numbersep=5pt,
+	breaklines=true,
+	showstringspaces=false,
+	basicstyle=\footnotesize,
+	keywordstyle=\color[rgb]{0, 0, 1},
+	commentstyle=\color[rgb]{0.1,0.47,0.1},
+	stringstyle=\color{red}
+}
+\begin{document}
+	
+\begin{titlepage}
+	\begin{center}
+		\thecompany
+		
+		\thelogo
+		
+		\vspace{10pt}
+		
+		
+		\vspace{60pt}
+		
+		\thetitle
+		
+		\vspace{160pt}
+		
+	\end{center}
+	
+	\begin{flushleft}
+		\begin{tabbing}
+			Grupo\qquad\qquad\= \theauthor \\
+			Professor\> Daniel Mendes Barbosa\\
+			
+		\end{tabbing}
+		
+	\end{flushleft}
+	
+	\begin{center}
+		\vspace{\fill}
+		Belo Horizonte, \thedate
+	\end{center}
+\end{titlepage}
+	\thispagestyle{empty}
+\tableofcontents
+	\thispagestyle{empty}
+	\clearpage
+	\setcounter{page}{1}
+	\begin{abstract}
+		Nesse trabalho irei analisar o desempenho de diferentes algoritmos na tarefa de encontrar, em um vetor, dois números que somados resultam em um dado valor X. Por fim será proposta uma modificação no método de pesquisa em busca de um desempenho melhor.
+	\end{abstract}
+	{
+	\selectlanguage{english}
+	\begin{abstract}
+	    This work is based on an analysis of different algorithms for finding two numbers in a vector whose sum is a given value X. Then i'll offer some changes in the searching method seeking better performance.
+	\end{abstract}
+	}
+    \section{Introdução}\label{intro}
+        Em sala de aula, o professor Daniel propôs uma solução para o problema de encontrar dois números em um vetor que somam um dado valor x. Tal solução era composta pela ordenação do vetor e a execução de uma busca binária em função de $(x-A_{i}) \forall i / 0 \leq i \leq t$, sendo t o tamanho do vetor, e $i \in Z$. 
+        
+        Para a primeira parte foi pedido que implementássemos essa solução utilizando diferentes algoritmos de ordenação com grau de complexidade O($nlog(n)$). Eu escolhi os algoritmos QuickSort, HeapSort e MergeSort. 
+        
+        Para a segunda parte foi pedido que propuséssemos alguma alteração que não estivesse relacionada a ordenação para aumentar o desempenho do programa. Para essa parte levantei duas soluções as quais implementei e comparei os resultados mais a frente, são essas: troca do algoritmo de busca binária por um algoritmo de busca por interpolação e troca de toda a lógica para uma solução que utilizasse hash --- o que reduziria a complexidade do algoritmo de O($nlog(n)$) para O($n$).
+    \section{Desenvolvimento}\label{desenvolvimento}
+        \subsection{Ferramentas utilizadas}\label{ferramentas}
+            Durante a fase de codificação foram utilizadas as seguintes ferramentas: IDE KDevelop 5.1.1 para a codificação, o CMake 3.7.2 para a montagem e configuração, o git 2.13.5 para o controle de versões e o GCC 5.4.0rev3\footnote{para a compilação foram utilizadas as flags -O0 -march=native, o que permitiu uma análise independente de otimizações que interfeririam na análise do desempenho código em si} para a compilação. Durante a fase de documentação foi utilizada a plataforma online sharelatex que permite a escrita em \LaTeX{} de forma fácil e cômoda por esta se encontrar na nuvem e o servidor github, que é compatível com a tecnologia git anteriormente citada, para hospedar o repositório de desenvolvimento --- encontrado no link: \url{https://github.com/primary157/2EmArraySomamX}.
+        \subsection{Decisões de projeto}\label{decisoes}
+            Durante o desenvolvimento do algoritmo de Hash me deparei com uma certa inconsistência no desempenho quando o número de entradas crescia muito, logo depois descobri que esse problema estava relacionado tanto ao valor escolhido para M, sendo M o tamanho da Hash, pois muitas vezes o valor não era primo, quanto ao metodo de tratamento de colisões adotado, o qual optei por usar o método de endereçamento fechado por lista encadeada. Como a solução destes problemas encontrados seria muito trabalhosa e isso fugiria do escopo do trabalho, optei por abandonar a idéia de utilizar Hash como minha solução. Apesar disso mantive o código da Hash para futuramente eu continuar o que comecei. 
+        \subsection{Arquivos produzidos}\label{arquivos}
+            \subsubsection{binarysearch}
+                Arquivo que implementa o algoritmo de busca binaria em vetor de inteiros.
+            \subsubsection{buscacomhash}
+                Arquivo que implementa o algoritmo que utiliza uma hash para inserir itens de um vetor de inteiros e assim efetuar a busca do numero de valor $(x-A_{i}) \forall i / 0 \leq i \leq t$, sendo t o tamanho do vetor, e $i \in Z$.
+            \subsubsection{doissomamx}
+                Arquivo que implementa as funções diretamente relacionadas ao trabalho, as quais possuem suporte a qualquer algoritmo de ordenação e busca que sigam o padrão de parâmetro e retorno. 
+            \subsubsection{hash}
+                Arquivo que implementa o TAD Hash de endereçamento fechado por lista encadeada.
+            \subsubsection{heapsort}
+                Arquivo que implementa o algoritmo de ordenação por heap, ou heapsort, de um vetor de inteiros.
+            \subsubsection{quicksort}
+                Arquivo que implementa o algoritmo de ordenação por quicksort de um vetor de inteiros.
+            \subsubsection{mergesort}
+                Arquivo que implementa o algoritmo de ordenação por mergesort de um vetor de inteiros.
+            \subsubsection{interpolationsearch}
+                Arquivo que implementa o algoritmo de busca por interpolação em vetor de inteiros.
+            \subsubsection{listaencadeada}
+                Arquivo que implementa o TAD de lista encadeada auxiliar ao TAD Hash.
+        \subsection{Códigos de terceiros incorporados}\label{codigos}
+            \subsubsection{Quick Sort}\label{codigos_QuickSort}
+                O Algoritmo foi retirada da solução proposta por Nivio Ziviani em seu livro Projeto e Analise de Algoritmos em C e Pascal. 
+            \subsubsection{Heap Sort}\label{codigos_HeapSort}
+                Algoritmo foi retirado do site: \url{https://gist.github.com/marcoscastro/6877436826b6a8a9ccd3#file-heap_sort-c}
+            \subsubsection{Merge Sort}\label{codigos_MergeSort}
+                O Algoritmo foi retirada da solução proposta por Nivio Ziviani em seu livro Projeto e Analise de Algoritmos em C e Pascal.
+            \subsubsection{Interpolation Sort}\label{codigos_InterpolationSearch}
+                O Algoritmo baseado na adaptação do código em pascal do site: \url{https://users.dcc.uchile.cl/~rbaeza/handbook/algs/3/322.srch.p.html}
+                
+    \section{Bateria de Testes}\label{testes}
+        \subsection{\textit{geraraleatorio.py}}\label{gerador}
+            Para gerar os valores de entrada sem interferir no código, desenvolvi um programa em python que ao ter a saída padrão redirecionada para a entrada padrão do programa alimenta-o com dados os que esse necessita gerados aleatoriamente. Quando eu precisava de uma entrada 10x maior que 100.000 eu apenas precisava rodar o comando: 
+            \begin{verbatim}$ python geraraleatorio.py 10 | build/encontrar2quesomamx\end{verbatim}
+            
+            Quando eu precisava de uma entrada de tamanho 100.000 eu apenas precisava rodar o comando: 
+            \begin{verbatim}$ python geraraleatorio.py 1 | build/encontrar2quesomamx\end{verbatim}
+            
+        \subsection{Gráfico de custo}\label{grafico}
+        
+        \begin{tikzpicture}
+			\centering
+			\begin{axis}[
+				title={Gráfico de Custo},
+				axis lines = left,
+				ylabel=custo computacional, xlabel=tamanho da entrada,
+				legend style={at={(1.25,0.4)},anchor=south},
+			]
+         	\addplot[color=red, mark=*]
+            coordinates{
+                (100000, 4.33)
+                (500000, 26)
+                (1000000, 55)
+                (5000000, 306)
+                (10000000, 637)
+            };
+            \addlegendentry{Quick}
+            
+            coordinates{
+                (100000, 2.33)
+                (500000, 17)
+                (1000000, 36.33)
+                (5000000, 213.33)
+                (10000000, 649.67)
+            };      
+            \addlegendentry{Heap}
+            \addplot[color=green, mark=*]
+            coordinates{
+                (100000,11.33)
+                (500000, 61)
+                (1000000, 128.33)
+                (5000000, 710)
+                (10000000, 1470.33)
+            };   
+            \addlegendentry{Merge}
+            \addplot[color=purple, mark=*]
+            coordinates{
+                (100000, 8.33)
+                (500000, 61.67)
+                (1000000, 116)
+                (5000000, 584)
+                (10000000, 984.67)
+            };   
+            \addlegendentry{Q+I}
+            \addplot[color=yellow, mark=*]
+            coordinates{
+                (100000, 6.33)
+                (500000, 52)
+                (1000000, 97.67)
+                (5000000, 482.67)
+                (10000000, 817.67)
+            };    
+            \addlegendentry{H+I}
+            \addplot[color=pink, mark=*]
+            coordinates{
+                (100000, 14.67)
+                (500000, 96)
+                (1000000, 188)
+                (5000000, 973.33)
+                (10000000, 1811.87)
+            };      
+            \addlegendentry{M+I}
+            \addplot[color=black, mark=*]
+            coordinates{
+                (100000, 12)
+                (500000, 67)
+                (1000000, 136)
+                (5000000, 797)
+                (10000000, 1707.67)
+            };      
+            \addlegendentry{Q+B}
+            \addplot[color=brown, mark=*]
+            coordinates{
+                (100000, 10.33)
+                (500000, 56)
+                (1000000, 117.33)
+                (5000000, 703.33)
+                (10000000, 1532.33)
+            };
+            \addlegendentry{H+B}
+            \addplot[color=orange, mark=*]
+            coordinates{
+                (100000, 18.67)
+                (500000, 99.33)
+                (1000000, 207)
+                (5000000, 1193.67)
+                (10000000, 2525)
+            };
+            \addlegendentry{M+B}
+ 			\end{axis}            
+		\end{tikzpicture}
+		
+    \section{Análise de complexidade}\label{analise}
+        A maior parte dos algoritmos executados são algoritmos de grau de complexidade já conhecidos, logo cabe a nós examinar o grau de complexidade das combinações destas complexidades.
+        
+        E como provamos no Exercício 6 da 1ª lista da matéria de PAA: "algoritmos de ordem de complexidade distintas quando somados resultam em um algoritmo de ordem de complexidade igual a maior ordem de complexidade dentre os algoritmos". Tomando isso como verdade, apresentarei a complexidade de cada algoritmo executado no programa.
+        \subsection{Solução QuickSort + Busca Binária}
+            Os algoritmos utilizados são Busca Binária e QuickSort(veja: \ref{codigos_QuickSort}), seus graus de complexidade são, respectivamente, O($log(n)$) e O($nlog(n)$) no caso médio. Como O(a) + O(b) = O(max(a,b)), então O($log(n)$) + O ($nlog(n)$) = O($nlog(n)$).
+            
+        \subsection{Solução QuickSort + Busca por Interpolação}
+            Os algoritmos utilizados são a Busca por Interpolação(veja: \ref{codigos_InterpolationSearch}) e o QuickSort(veja: \ref{codigos_QuickSort}), seus graus de complexidade são, respectivamente, O($loglog(n)$)--- como pode ser visto na \href{https://en.wikipedia.org/wiki/Interpolation_search}{wikipedia} --- e O($nlog(n)$). Como O(a) + O(b) = O(max(a,b)), então O($loglog(n)$) + O ($nlog(n)$) = O($nlog(n)$).
+            
+        \subsection{Solução HeapSort + Busca Binária}
+            Os algoritmos utilizados são Busca Binária e HeapSort(veja: \ref{codigos_HeapSort}), seus graus de complexidade são, respectivamente, O($log(n)$) e O($nlog(n)$) no caso médio. Como O(a) + O(b) = O(max(a,b)), então O($log(n)$) + O ($nlog(n)$) = O($nlog(n)$).
+            
+        \subsection{Solução HeapSort + Busca por Interpolação}
+            Os algoritmos utilizados são a Busca por Interpolação(veja: \ref{codigos_InterpolationSearch}) e o HeapSort(veja: \ref{codigos_HeapSort}), seus graus de complexidade são, respectivamente, O($loglog(n)$)--- como pode ser visto na \href{https://en.wikipedia.org/wiki/Interpolation_search}{wikipedia} --- e O($nlog(n)$). Como O(a) + O(b) = O(max(a,b)), então O($loglog(n)$) + O ($nlog(n)$) = O($nlog(n)$).
+            
+        \subsection{Solução MergeSort + Busca Binária}
+            Os algoritmos utilizados são Busca Binária e MergeSort(veja: \ref{codigos_MergeSort}), seus graus de complexidade são, respectivamente, O($log(n)$) e O($nlog(n)$) no caso médio. Como O(a) + O(b) = O(max(a,b)), então O($log(n)$) + O ($nlog(n)$) = O($nlog(n)$).
+            
+        \subsection{Solução MergeSort + Busca por Interpolação}
+            Os algoritmos utilizados são a Busca por Interpolação(veja: \ref{codigos_InterpolationSearch}) e o MergeSort(veja: \ref{codigos_MergeSort}), seus graus de complexidade são, respectivamente, O($loglog(n)$)--- como pode ser visto na \href{https://en.wikipedia.org/wiki/Interpolation_search}{wikipedia} --- e O($nlog(n)$). Como O(a) + O(b) = O(max(a,b)), então O($loglog(n)$) + O ($nlog(n)$) = O($nlog(n)$).
+            
+        \subsection{Solução Hash}
+            O algoritmo de Hash segundo material da \href{http://professor.ufabc.edu.br/~leticia.bueno/classes/aed2/materiais/hashing.pdf}{ufabc} todas operações --- inserção, busca e remoção --- são: no caso médio, O($1$); no pior caso, O($n$). Se a Hash fosse otimizada teríamos uma complexidade total equivalente a $n*$O($1$)+$n*$O($1$), equivalente a n inserções e n buscas no máximo, ou seja, O($n$)+O($n$) = O($n$). 
+            
+            Porém a Hash situada no trabalho provou-se ineficiente, o que nos leva ao pior caso de hash, que tem complexidade O($n$) para todas as operações, logo $n*$O($n$)+$n*$O($n$)=O($n^2$)+O($n^2$)=O($n^2$), equivalente a n inserções e n buscas no máximo.
+    \section{Conclusão}\label{conclusao}
+        Diante das funções de complexidade encontradas e do resultado empírico obtido nos testes, evidencia-se que o método de busca por interpolação juntamente ao algoritmo de ordenação heapsort possuem na média os melhores desempenhos. Com esse trabalho pude perceber o crescente \textit{gap} de desempenho existente entre diferentes algoritmos de ordenação e busca, além de descobrir casos não tradicionais em que os algoritmos e TADS aprendidos durante a disciplina de Algoritmos e Estrutura de Dados são amplamente utilizados para se obter um resultado com baixo custo computacional.
+\end{document} 
